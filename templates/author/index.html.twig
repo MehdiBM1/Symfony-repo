@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Auteurs{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>📚 Liste des Auteurs</h1>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for author in authors %}
+                <tr>
+                    <td>{{ author.id }}</td>
+                    <td>{{ author.username }}</td>
+                    <td>
+                        {% if author.email %}
+                            {{ author.email }}
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted py-4">
+                        Aucun auteur trouvé dans la base de données.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
