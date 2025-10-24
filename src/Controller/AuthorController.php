@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Author;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,10 +46,14 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/author/{id}', name: 'app_author_show', requirements: ['id' => '\\d+'])]
-    public function show(Author $author): Response
+    public function show(Author $author, BookRepository $bookRepository): Response
     {
+        // Use DQL-based repository method to fetch enabled books for this author
+        $books = $bookRepository->findEnabledByAuthorDql($author);
+
         return $this->render('author/show.html.twig', [
             'author' => $author,
+            'books' => $books,
         ]);
     }
 

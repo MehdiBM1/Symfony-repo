@@ -16,7 +16,8 @@ class BookController extends AbstractController
     #[Route('/books', name: 'app_book_index')]
     public function index(BookRepository $bookRepository): Response
     {
-        $books = $bookRepository->findAll();
+        // Use DQL-backed repository method to fetch books with authors
+        $books = $bookRepository->findAllWithAuthorDql();
 
         return $this->render('book/index.html.twig', [
             'books' => $books,

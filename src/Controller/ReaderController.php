@@ -14,9 +14,17 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ReaderController extends AbstractController
 {
     #[Route('/readers', name: 'app_reader_index')]
-    public function index(ReaderRepository $readerRepository): Response
+    public function index(ReaderRepository $readerRepository, Request $request): Response
     {
-        $readers = $readerRepository->findAll();
+        $q = $request->query->get('q');
+
+        if ($q) {
+            // search by username using DQL
+            $readers = $readerRepository->findByUsernameLikeDql($q);
+        } else {
+            // ordered list via DQL
+            $readers = $readerRepository->findAllOrderedByUsernameDql();
+        }
 
         return $this->render('reader/index.html.twig', [
             'readers' => $readers,
