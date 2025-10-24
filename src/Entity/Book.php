@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -21,6 +23,10 @@ class Book
 
     #[ORM\Column]
     private ?bool $enabled = null;
+
+    #[ORM\ManyToOne(targetEntity: \App\Entity\Author::class, inversedBy: 'books')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?\App\Entity\Author $author = null;
 
     public function getId(): ?int
     {
@@ -59,6 +65,18 @@ class Book
     public function setEnabled(bool $enabled): static
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?\App\Entity\Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?\App\Entity\Author $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

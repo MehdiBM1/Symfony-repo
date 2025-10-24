@@ -4,8 +4,11 @@
 
 {% block body %}
 <div class="container mt-4">
-    <h1>📚 Liste des Auteurs</h1>
-    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>📚 Liste des Auteurs</h1>
+        <a class="btn btn-primary" href="{{ path('app_author_new') }}">Créer un auteur</a>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -13,6 +16,7 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Email</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,19 +24,18 @@
                 <tr>
                     <td>{{ author.id }}</td>
                     <td>{{ author.username }}</td>
+                    <td>{{ author.email ?: '-' }}</td>
                     <td>
-                        {% if author.email %}
-                            {{ author.email }}
-                        {% else %}
-                            <span class="text-muted">-</span>
-                        {% endif %}
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_author_show', {'id': author.id}) }}">Show</a>
+                        <a class="btn btn-sm btn-outline-primary" href="{{ path('app_author_edit', {'id': author.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('app_author_delete', {'id': author.id}) }}" style="display:inline-block" onsubmit="return confirm('Delete this author?');">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3" class="text-center text-muted py-4">
-                        Aucun auteur trouvé dans la base de données.
-                    </td>
+                    <td colspan="4" class="text-center text-muted py-4">Aucun auteur trouvé.</td>
                 </tr>
             {% endfor %}
             </tbody>

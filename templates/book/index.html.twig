@@ -1,20 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookController!{% endblock %}
+{% block title %}Liste des livres{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>📚 Liste des livres</h1>
+        <a class="btn btn-primary" href="{{ path('app_book_new') }}">Créer un livre</a>
+    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/mehdi/Desktop/Symfony/FirstProject/src/Controller/BookController.php</code></li>
-        <li>Your template at <code>C:/Users/mehdi/Desktop/Symfony/FirstProject/templates/book/index.html.twig</code></li>
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Publication</th>
+                    <th>Publié</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author ? book.author.username : '-' }}</td>
+                    <td>{{ book.publicationDate ? book.publicationDate|date('Y-m-d') : '-' }}</td>
+                    <td>{{ book.enabled ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_book_show', {'id': book.id}) }}">Show</a>
+                        <a class="btn btn-sm btn-outline-primary" href="{{ path('app_book_edit', {'id': book.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('app_book_delete', {'id': book.id}) }}" style="display:inline-block" onsubmit="return confirm('Delete this book?');">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">Aucun livre trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

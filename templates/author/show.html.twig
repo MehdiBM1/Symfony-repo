@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails auteur{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Détails de l'auteur</h1>
+
+    <ul class="list-group">
+        <li class="list-group-item"><strong>ID:</strong> {{ author.id }}</li>
+        <li class="list-group-item"><strong>Nom:</strong> {{ author.username }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ author.email ?: '-' }}</li>
+    </ul>
+
+    <div class="mt-3">
+        <a class="btn btn-primary" href="{{ path('app_author_edit', {'id': author.id}) }}">Edit</a>
+        <a class="btn btn-link" href="{{ path('app_author_index') }}">Retour</a>
+    </div>
+</div>
+{% endblock %}
